@@ -1,60 +1,12 @@
 <template>
   <div id="app">
-    <Header/>
-    <section class="todo__section">
-      <AddTodo v-on:add-todo="addTodo"/>
-      <Todo v-bind:todos="todos" v-on:del-todo="deleteTodo"/>
-    </section>
+    <div id="nav">
+      <router-link class="btn" to="/">Home</router-link>
+      <router-link class="btn" to="/about">About</router-link>
+    </div>
+    <router-view/>
   </div>
 </template>
-
-<script>
-import HelloWorld from "./components/HelloWorld";
-import Todo from "./components/Todo";
-import AddTodo from "./components/AddTodo";
-import Header from "./components/layout/Header";
-import axios from "axios";
-
-export default {
-  name: "app",
-  components: {
-    Todo,
-    Header,
-    AddTodo
-  },
-  data() {
-    return {
-      todos: []
-    };
-  },
-  methods: {
-    deleteTodo(id) {
-      axios
-        .delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
-        .then(
-          response => (this.todos = this.todos.filter(todo => todo.id !== id))
-        )
-        .catch(error => console.log(error));
-    },
-    addTodo(newTodo) {
-      const { title, completed } = newTodo;
-      axios
-        .post("https://jsonplaceholder.typicode.com/todos", {
-          title,
-          completed
-        })
-        .then(response => (this.todos = [...this.todos, response.data]))
-        .catch(error => console.log(error));
-    }
-  },
-  created() {
-    axios
-      .get("https://jsonplaceholder.typicode.com/todos?_limit=8")
-      .then(response => (this.todos = response.data))
-      .catch(error => console.log(error));
-  }
-};
-</script>
 
 <style>
 html {
@@ -82,6 +34,7 @@ html {
   color: #fff;
   padding: 7px 20px;
   cursor: pointer;
+  text-decoration: none;
 }
 .btn:hover,
 .btn:active {
