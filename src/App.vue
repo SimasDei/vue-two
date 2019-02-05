@@ -1,17 +1,25 @@
 <template>
   <div id="app">
-    <Todo v-bind:todos="todos"/>
+    <Header/>
+    <section class="todo__section">
+      <AddTodo v-on:add-todo="addTodo"/>
+      <Todo v-bind:todos="todos" v-on:del-todo="deleteTodo"/>
+    </section>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-import Todo from "./components/Todo.vue";
+import HelloWorld from "./components/HelloWorld";
+import Todo from "./components/Todo";
+import AddTodo from "./components/AddTodo";
+import Header from "./components/layout/Header";
 
 export default {
   name: "app",
   components: {
-    Todo
+    Todo,
+    Header,
+    AddTodo
   },
   data() {
     return {
@@ -24,7 +32,7 @@ export default {
         {
           id: 2,
           title: "Todo Two",
-          completed: true
+          completed: false
         },
         {
           id: 3,
@@ -33,11 +41,23 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    deleteTodo(id) {
+      this.todos = this.todos.filter(todo => todo.id !== id);
+    },
+    addTodo(newTodo) {
+      this.todos = [...this.todos, newTodo];
+    }
   }
 };
 </script>
 
 <style>
+html {
+  background: #333;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -47,5 +67,21 @@ export default {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.todo__section {
+  max-width: 80%;
+  margin: auto;
+}
+.btn {
+  display: inline-block;
+  border: none;
+  background: #555;
+  color: #fff;
+  padding: 7px 20px;
+  cursor: pointer;
+}
+.btn:hover,
+.btn:active {
+  background: #666;
 }
 </style>
